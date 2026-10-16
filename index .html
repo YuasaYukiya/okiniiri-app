@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>わたしのおきにいり</title>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<style>
+
+body{
+    font-family:
+    "BIZ UDPGothic",
+    "BIZ UDPゴシック",
+    sans-serif;
+
+    background:#f4f8ff;
+    margin:0;
+    padding:20px;
+    text-align:center;
+}
+
+h1{
+    font-size:42px;
+    color:#005bbb;
+}
+
+h2{
+    font-size:34px;
+}
+
+.screen{
+    display:none;
+}
+
+.active{
+    display:block;
+}
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:20px;
+
+    margin-top:20px;
+}
+
+.card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:15px;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 4px 10px rgba(0,0,0,.15);
+
+    transition:.2s;
+}
+
+.card:hover{
+
+    transform:scale(1.03);
+}
+
+.card img{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:15px;
+}
+
+.card-title{
+
+    font-size:30px;
+
+    margin-top:10px;
+
+    font-weight:bold;
+}
+
+.reasonBtn{
+
+    width:80%;
+
+    font-size:30px;
+
+    padding:20px;
+
+    margin:12px;
+
+    border:none;
+
+    border-radius:15px;
+
+    cursor:pointer;
+}
+
+.back{
+
+    margin-top:20px;
+
+    font-size:24px;
+
+    padding:10px 20px;
+}
+
+input[type="text"]{
+
+    width:80%;
+
+    padding:15px;
+
+    font-size:26px;
+}
+
+.resultImage{
+
+    width:350px;
+
+    border-radius:20px;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- 行事選択 -->
+
+<div id="eventScreen" class="screen active">
+
+<h1>すきな ぎょうじを えらぼう</h1>
+
+<div class="grid">
+
+<div class="card"
+onclick="selectEvent(
+'スポーツの日',
+'img/gyouji/sports.png'
+)">
+
+<img src="img/gyouji/sports.png">
+
+<div class="card-title">
+スポーツの日
+</div>
+
+</div>
+
+<div class="card"
+onclick="selectEvent(
+'ハロウィン',
+'img/gyouji/halloween.png'
+)">
+
+<img src="img/gyouji/halloween.png">
+
+<div class="card-title">
+
+ハロウィン
+
+</div>
+
+</div>
+
+<div class="card"
+onclick="selectEvent(
+'きらきら祭',
+'img/gyouji/kirakira.png'
+)">
+
+<img src="img/gyouji/kirakira.png">
+
+<div class="card-title">
+
+きらきら祭
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- 行事理由 -->
+
+<div id="eventReasonScreen" class="screen">
+
+<h1>りゆうを えらぼう</h1>
+
+<button
+class="reasonBtn"
+onclick="selectEventReason('たのしそう')">
+
+😊 たのしそう
+
+</button>
+
+<br>
+
+<button
+class="reasonBtn"
+onclick="selectEventReason('やってみたい')">
+
+🙋 やってみたい
+
+</button>
+
+<br>
+
+<button
+class="reasonBtn"
+onclick="selectEventReason('しっている')">
+
+👍 しっている
+
+</button>
+
+<br>
+
+<button
+class="reasonBtn"
+onclick="otherEventReason()">
+
+💬 そのほか
+
+</button>
+
+</div>
+
+<!-- 行事その他 -->
+
+<div id="eventOtherScreen" class="screen">
+
+<h1>りゆうを かいてね</h1>
+
+<input
+type="text"
+id="eventOtherText">
+
+<br><br>
+
+<button
+class="reasonBtn"
+onclick="saveEventOther()">
+
+けってい
+
+</button>
+
+</div>
+<!-- 食べ物選択 -->
+
+<div id="foodScreen" class="screen">
+
+<h1>すきな たべものを えらぼう</h1>
+
+<div class="grid">
+
+
+<div class="card" onclick="selectFood('さつまいも','img/tabemono/satumaimo.png')">
+
+<img src="img/tabemono/satumaimo.png">
+
+<div class="card-title">
+さつまいも
+</div>
+
+</div>
+
+<div class="card" onclick="selectFood('かぼちゃ','img/tabemono/kabocha.png')">
+<img src="img/tabemono/kabocha.png">
+<div class="card-title">
+かぼちゃ
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('さといも','img/tabemono/satoimo.png')">
+<img src="img/tabemono/satoimo.png">
+
+
+<div class="card-title">
+さといも
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('れんこん','img/tabemono/renkon.png')">
+<img src="img/tabemono/renkon.png">
+<div class="card-title">
+れんこん
+</div>
+ 
+</div>
+
+
+<div class="card" onclick="selectFood('ぎんなん','img/tabemono/ginnan.png')">
+<img src="img/tabemono/ginnan.png">
+<div class="card-title">
+ぎんなん
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('にんじん','img/tabemono/ninjin.png')">
+<img src="img/tabemono/ninjin.png">
+<div class="card-title">
+
+にんじん
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('しゃけ','img/tabemono/syake.png')">
+<img src="img/tabemono/syake.png">
+
+<div class="card-title">
+しゃけ
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('さば','img/tabemono/saba.png')">
+<img src="img/tabemono/saba.png">
+
+
+<div class="card-title">
+
+さば
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('さんま','img/tabemono/sanma.png')">
+<img src="img/tabemono/sanma.png">
+
+
+<div class="card-title">
+
+さんま
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('かつお','img/tabemono/katsuo.png')">
+<img src="img/tabemono/katsuo.png">
+
+<div class="card-title">
+かつお
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('なし','img/tabemono/nashi.png')">
+<img src="img/tabemono/nashi.png">
+
+
+<div class="card-title">
+
+なし
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('ぶどう','img/tabemono/budou.png')">
+<img src="img/tabemono/budou.png">
+
+
+<div class="card-title">
+ぶどう
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('かき','img/tabemono/kaki.png')">
+<img src="img/tabemono/kaki.png">
+
+
+<div class="card-title">
+
+かき
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('りんご','img/tabemono/ringo.png')">
+<img src="img/tabemono/ringo.png">
+
+
+<div class="card-title">
+
+りんご
+</div>
+ 
+</div>
+
+<div class="card" onclick="selectFood('いちじく','img/tabemono/ichijiku.png')">
+<img src="img/tabemono/ichijiku.png">
+
+
+<div class="card-title">
+いちじく
+</div>
+ 
+</div>
+
+</div>
+
+</div>
+
+<!-- 食べ物理由 -->
+
+<div id="foodReasonScreen" class="screen">
+
+<h1>りゆうを えらぼう</h1>
+
+<button class="reasonBtn"
+onclick="selectFoodReason('おいしそう')">
+
+😋 おいしそう
+
+</button>
+
+<br>
+
+<button class="reasonBtn"
+onclick="selectFoodReason('たべたことがある')">
+
+🍴 たべたことがある
+
+</button>
+
+<br>
+
+<button class="reasonBtn"
+onclick="selectFoodReason('たべてみたい')">
+
+✨ たべてみたい
+
+</button>
+
+<br>
+
+<button class="reasonBtn"
+onclick="show('foodOtherScreen')">
+
+💬 そのほか
+
+</button>
+
+</div>
+
+
+
+<!-- 食べ物理由その他 -->
+
+<div id="foodOtherScreen" class="screen">
+
+<h1>りゆうを かいてね</h1>
+
+<input
+type="text"
+id="foodOtherText">
+
+<br><br>
+
+<button
+class="reasonBtn"
+onclick="saveFoodOther()">
+
+けってい
+
+</button>
+
+</div>
+
+
+<!-- 料理選択 -->
+
+<div id="ryouriScreen" class="screen">
+
+<h1>すきな りょうりを えらぼう</h1>
+
+<div class="grid">
+
+<div class="card"
+onclick="selectRyouri('やきいも','img/ryouri/yakiimo.png')">
+
+<img src="img/ryouri/yakiimo.png">
+
+<div class="card-title">
+やきいも
+</div>
+
+</div>
+
+<div class="card"
+onclick="selectRyouri('かぼちゃサラダ','img/ryouri/kabocha_salad.png')">
+
+<img src="img/ryouri/kabocha_salad.png">
+
+<div class="card-title">
+かぼちゃサラダ
+</div>
+
+</div>
+
+<div class="card"
+onclick="selectRyouri('さといものにもの','img/ryouri/satoimo_nimono.png')">
+
+<img src="img/ryouri/satoimo_nimono.png">
+
+<div class="card-title">
+
+さといものにもの
+</div>
+
+</div>
+
+<div class="card"
+onclick="selectRyouri('れんこんのきんぴら','img/ryouri/renkon_kinpira.png')">
+
+<img src="img/ryouri/renkon_kinpira.png">
+<div class="card-title">
+れんこんのきんぴら
+</div>
+
+</div>
+
+<div class="card"
+onclick="selectRyouri('さんまのしおやき','img/ryouri/sanma_shioyaki.png')">
+
+<img src="img/ryouri/sanma_shioyaki.png">
+
+<div class="card-title">
+さんまのしおやき
+</div>
+
+</div>
+
+<div class="card"
+onclick="selectRyouri('さばのみそに','img/ryouri/saba_misoni.png')">
+
+<img src="img/ryouri/saba_misoni.png">
+
+
+<div class="card-title">
+さばのみそに
+</div>
+
+</div>
+
+<div class="card"
+onclick="selectRyouri('かつおのたたき','img/ryouri/katsuo_tataki.png')">
+
+<img src="img/ryouri/katsuo_tataki.png">
+
+<div class="card-title">
+かつおのたたき
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 料理理由 -->
+
+<div id="ryouriReasonScreen" class="screen">
+
+<h1>りゆうを えらぼう</h1>
+
+<button
+class="reasonBtn"
+onclick="selectRyouriReason('おいしそう')">
+
+😋 おいしそう
+
+</button>
+
+<br>
+
+<button
+class="reasonBtn"
+onclick="selectRyouriReason('たべたことがある')">
+
+🍴 たべたことがある
+
+</button>
+
+<br>
+
+<button
+class="reasonBtn"
+onclick="selectRyouriReason('たべてみたい')">
+
+✨ たべてみたい
+
+</button>
+
+<br>
+
+<button
+class="reasonBtn"
+onclick="show('ryouriOtherScreen')">
+
+💬 そのほか
+
+</button>
+
+</div>
+
+<!-- 料理理由その他 -->
+
+<div id="ryouriOtherScreen" class="screen">
+
+<h1>りゆうを かいてね</h1>
+
+<input
+type="text"
+id="ryouriOtherText">
+
+<br><br>
+
+<button
+class="reasonBtn"
+onclick="saveRyouriOther()">
+
+けってい
+
+</button>
+
+</div>
+
+<!-- まとめ画面 -->
+
+<div id="resultScreen" class="screen">
+
+<h1>わたしのおきにいり</h1>
+
+<h2>すきな ぎょうじ</h2>
+
+<img
+id="resultEventImage"
+class="resultImage">
+
+<p id="resultEvent"></p>
+
+<p id="resultEventReason"></p>
+
+<hr>
+
+<h2>すきな たべもの</h2>
+
+<img
+id="resultFoodImage"
+class="resultImage">
+
+<p id="resultFood"></p>
+
+<p id="resultFoodReason"></p>
+
+<hr>
+
+<h2>すきな りょうり</h2>
+
+<img
+id="resultRyouriImage"
+class="resultImage">
+
+<p id="resultRyouri"></p>
+
+<p id="resultRyouriReason"></p>
+
+<br><br>
+
+<button
+class="reasonBtn"
+onclick="saveAsImage()">
+
+📷 がぞうでほぞん
+
+</button>
+
+<br><br>
+
+<button
+class="reasonBtn"
+onclick="restartApp()">
+
+もういちど
+
+</button>
+
+</div>
+
+
+
+<script>
+
+let eventName="";
+let eventImage="";
+let eventReason="";
+
+let foodName="";
+let foodImage="";
+let foodReason="";
+
+let ryouriName="";
+let ryouriImage="";
+let ryouriReason="";
+
+function selectFood(name,image){
+
+    foodName = name;
+    foodImage = image;
+
+    show("foodReasonScreen");
+
+}
+
+
+function show(screen){
+
+document
+.querySelectorAll(".screen")
+.forEach(s=>s.classList.remove("active"));
+
+document
+.getElementById(screen)
+.classList.add("active");
+
+}
+
+function selectEvent(name,image){
+
+eventName=name;
+eventImage=image;
+
+show("eventReasonScreen");
+
+}
+
+function selectEventReason(reason){
+
+eventReason=reason;
+
+ show("foodScreen");
+
+}
+
+function otherEventReason(){
+
+show("eventOtherScreen");
+
+}
+
+function saveEventOther(){
+
+eventReason=
+document
+.getElementById("eventOtherText")
+.value;
+
+alert(
+"理由を保存しました"
+);
+
+}
+
+function selectFoodReason(reason){
+
+    foodReason = reason;
+
+    show("ryouriScreen");
+
+}
+
+function saveFoodOther(){
+
+    foodReason =
+    document.getElementById(
+        "foodOtherText"
+    ).value;
+
+    show("ryouriScreen");
+
+}
+
+function selectRyouri(name,image){
+
+    ryouriName = name;
+    ryouriImage = image;
+
+    show("ryouriReasonScreen");
+
+}
+
+function selectRyouriReason(reason){
+
+    ryouriReason = reason;
+
+    updateResult();
+
+    show("resultScreen");
+
+}
+
+function saveRyouriOther(){
+
+    ryouriReason =
+    document.getElementById(
+        "ryouriOtherText"
+    ).value;
+
+    updateResult();
+
+    show("resultScreen");
+
+}
+
+function updateResult(){
+
+document.getElementById(
+"resultEventImage"
+).src=eventImage;
+
+document.getElementById(
+"resultEvent"
+).textContent=
+eventName;
+
+document.getElementById(
+"resultEventReason"
+).textContent=
+"りゆう："
++ eventReason;
+
+document.getElementById(
+"resultFoodImage"
+).src=foodImage;
+
+document.getElementById(
+"resultFood"
+).textContent=
+foodName;
+
+document.getElementById(
+"resultFoodReason"
+).textContent=
+"りゆう："
++ foodReason;
+
+document.getElementById(
+"resultRyouriImage"
+).src=ryouriImage;
+
+document.getElementById(
+"resultRyouri"
+).textContent=
+ryouriName;
+
+document.getElementById(
+"resultRyouriReason"
+).textContent=
+"りゆう："
++ ryouriReason;
+
+}
+
+function saveAsImage(){
+
+    html2canvas(
+        document.getElementById("resultScreen")
+    ).then(function(canvas){
+
+        const win = window.open("");
+
+        win.document.write(
+            "<h2>長押しまたは右クリックで保存してください</h2>"
+        );
+
+        win.document.body.appendChild(canvas);
+
+    });
+
+}
+
+function restartApp(){
+
+location.reload();
+
+}
+
+
+</script>
+
+</body>
+</html>
